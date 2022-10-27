@@ -14,14 +14,13 @@ public class AddProjectTest : TestBase
         var account = new Account("eddie.1o1@bk.ru", "121233aa");
         var project = new Project
         {
-            Title = "ehtr3rj3tyj"
+            Title = "semenar 3"
         };
 
-        ManageWindowSize(1920, 1040);
-        Login(account);
+        _app.LoginHelper.Login(account);
         Thread.Sleep(8000);
 
-        AddNewProject(project);
+        _app.ProjectHelper.AddNewProject(project);
         Thread.Sleep(3000);
     }
 }

@@ -2,6 +2,7 @@ using System.Threading;
 using NUnit.Framework;
 using Selenium.Base;
 using Selenium.Entities;
+using Selenium.Helpers;
 
 namespace Selenium.Tests;
 
@@ -12,8 +13,8 @@ public class AuthTest : TestBase
     public void AuthorizeTest()
     {
         var account = new Account("eddie.1o1@bk.ru", "121233aa");
-        ManageWindowSize(1920, 1040);
-        Login(account);
+        
+        _app.LoginHelper.Login(account);
         Thread.Sleep(15000);
     }
 }
