@@ -1,6 +1,5 @@
 using System.Threading;
 using NUnit.Framework;
-using Selenium.Base;
 using Selenium.Entities;
 
 namespace Selenium.Tests;
@@ -9,9 +8,9 @@ namespace Selenium.Tests;
 public class AddTaskTest : TestBase
 {
     [Test]
-    public void Run()
+    public void LogInAndEnterTask_ShouldCreateNewTask()
     {
-        var account = new Account("eddie.1o1@bk.ru", "121233aa");
+        var account = new Account(BaseEmail, BasePassword);
         var task = new Task
         {
             Title = "My New Test",

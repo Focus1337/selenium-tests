@@ -1,14 +1,13 @@
-﻿using Selenium.Base;
-
-namespace Selenium.Helpers;
+﻿namespace Selenium.Helpers;
 
 public class NavigationHelper : HelperBase
 {
-    private string _baseUrl;
+    private readonly string _baseUrl;
 
-    public NavigationHelper(ApplicationManager manager, string baseUrl) : base(manager) =>
+    public NavigationHelper(ApplicationManager app, string baseUrl)
+        : base(app) =>
         _baseUrl = baseUrl;
 
-    public void OpenPage(string url) =>
-        _driver.Navigate().GoToUrl(url);
+    public void OpenPage(string endpoint) =>
+        _driver.Navigate().GoToUrl(_baseUrl + endpoint);
 }
