@@ -1,26 +1,30 @@
 using System.Threading;
-using NUnit.Framework;
 using Selenium.Entities;
+using Xunit;
 
 namespace Selenium.Tests;
 
-[TestFixture]
-public class AddTaskTest : TestBase
+[Collection("Collection")]
+public class TaskTests
 {
-    [Test]
+    private readonly TestsFixture _fixture;
+
+    public TaskTests(TestsFixture fixture) =>
+        _fixture = fixture;
+
+    [Fact]
     public void LogInAndEnterTask_ShouldCreateNewTask()
     {
-        var account = new Account(BaseEmail, BasePassword);
         var task = new Task
         {
             Title = "My New Test",
             Text = "Text text text 123"
         };
 
-        _app.LoginHelper.Login(account);
+        _fixture.App.LoginHelper.Login(_fixture.Account);
         Thread.Sleep(15000);
 
-        _app.TaskHelper.AddNewTask(task);
+        _fixture.App.TaskHelper.AddNewTask(task);
         Thread.Sleep(3000);
     }
 }

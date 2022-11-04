@@ -10,4 +10,7 @@ public class NavigationHelper : HelperBase
 
     public void OpenPage(string endpoint) =>
         _driver.Navigate().GoToUrl(_baseUrl + endpoint);
+
+    public void OpenHomePage() =>
+        OpenPage("");
 }
