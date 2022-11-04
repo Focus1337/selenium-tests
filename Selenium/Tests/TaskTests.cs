@@ -21,7 +21,7 @@ public class TaskTests
             Text = "Text text text 123"
         };
 
-        _fixture.App.LoginHelper.Login(_fixture.Account);
+        _fixture.App.AccountHelper.Login(_fixture.Account);
         Thread.Sleep(15000);
 
         _fixture.App.TaskHelper.AddNewTask(task);

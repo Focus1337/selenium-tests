@@ -2,9 +2,9 @@
 
 namespace Selenium.Helpers;
 
-public class LoginHelper : HelperBase
+public class AccountHelper : HelperBase
 {
-    public LoginHelper(ApplicationManager app) 
+    public AccountHelper(ApplicationManager app) 
         : base(app)
     { }
 

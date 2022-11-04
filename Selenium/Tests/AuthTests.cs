@@ -14,7 +14,7 @@ public class AuthTests
     [Fact]
     public void EnterExistingAccountAndLogIn_ShouldLogIn()
     {
-        _fixture.App.LoginHelper.Login(_fixture.Account);
+        _fixture.App.AccountHelper.Login(_fixture.Account);
         Thread.Sleep(15000);
     }
 }

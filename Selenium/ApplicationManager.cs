@@ -16,7 +16,7 @@ public class ApplicationManager : IDisposable
     private static ThreadLocal<ApplicationManager> _app = new();
     public IWebDriver Driver { get; }
     public NavigationHelper NavigationHelper { get; }
-    public LoginHelper LoginHelper { get; }
+    public AccountHelper AccountHelper { get; }
     public TaskHelper TaskHelper { get; }
     public ProjectHelper ProjectHelper { get; }
     public IJavaScriptExecutor JavaScriptExecutor { get; }
@@ -30,7 +30,7 @@ public class ApplicationManager : IDisposable
         _verificationErrors = new StringBuilder();
 
         NavigationHelper = new NavigationHelper(this, BaseUrl);
-        LoginHelper = new LoginHelper(this);
+        AccountHelper = new AccountHelper(this);
         TaskHelper = new TaskHelper(this);
         ProjectHelper = new ProjectHelper(this);
     }
