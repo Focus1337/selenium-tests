@@ -31,7 +31,6 @@ public class ProjectTests
         Assert.Equal(expected, _fixture.App.ProjectHelper.GetLastCreatedProject().Title);
     }
 
-
     [Theory]
     [InlineData(2)]
     [InlineData(1)]
@@ -46,5 +45,21 @@ public class ProjectTests
 
         // assert
         Assert.False(_fixture.App.ProjectHelper.IsProjectExists(realId));
+    }
+
+    [Theory]
+    [InlineData(1, "NewTitle")]
+    [InlineData(2, "wlkrlkgertle")]
+    public void UpdateTitle_ProjectExists_ShouldChangeTitle(int projectNumber, string title)
+    {
+        // arrange
+
+        // act
+        _fixture.App.AccountHelper.Login(_fixture.Account);
+        _fixture.App.ProjectHelper.UpdateProjectTitle(projectNumber, title);
+        Thread.Sleep(3000);
+
+        // assert
+        Assert.Equal(title, _fixture.App.ProjectHelper.GetProjectByNumber(projectNumber).Title);
     }
 }

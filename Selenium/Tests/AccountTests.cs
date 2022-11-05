@@ -3,11 +3,11 @@ using Xunit;
 namespace Selenium.Tests;
 
 [Collection("Collection")]
-public class AuthTests
+public class AccountTests
 {
     private readonly TestsFixture _fixture;
 
-    public AuthTests(TestsFixture fixture) =>
+    public AccountTests(TestsFixture fixture) =>
         _fixture = fixture;
 
     [Fact]

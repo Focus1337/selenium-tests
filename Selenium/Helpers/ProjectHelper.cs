@@ -9,6 +9,9 @@ namespace Selenium.Helpers;
 
 public class ProjectHelper : HelperBase
 {
+    private const string ProjectAttribute = "data-id";
+    private const string ProjectsListIdentifier = "projects_list";
+
     public ProjectHelper(ApplicationManager app)
         : base(app)
     {
@@ -38,7 +41,8 @@ public class ProjectHelper : HelperBase
         var projectsListElements = GetProjectsList();
 
         if (!IsProjectExists(GetRealProjectId(projectNumber)))
-            throw new NullReferenceException($"Project with provided project number: {projectNumber} doesn't exist.");
+            throw new NullReferenceException(
+                $"Project with provided {nameof(projectNumber)}: {projectNumber} doesn't exist.");
 
         var element = projectsListElements[projectNumber];
         element.FindElement(By.TagName("button")).Click();
@@ -47,71 +51,50 @@ public class ProjectHelper : HelperBase
         FindElement(FindBy.CssSelector, ".\\_3d1243b2 > .bbdb467b").Click();
     }
 
+    public void UpdateProjectTitle(int projectNumber, string title)
+    {
+        var realId = GetRealProjectId(projectNumber);
+        if (!IsProjectExists(realId))
+            throw new NullReferenceException(
+                $"Project with provided {nameof(projectNumber)}: {projectNumber} doesn't exist.");
+
+        var element = FindElement(FindBy.CssSelector, $"li[{ProjectAttribute}='{realId}']");
+        element.FindElement(By.TagName("button")).Click();
+        FindElement(FindBy.CssSelector, ".menu_item:nth-child(4) > .icon_menu_item__content").Click();
+
+        var field = FindElement(FindBy.Id, "edit_project_modal_field_name");
+        field.Clear();
+        field.Fill(title);
+
+        FindElement(FindBy.CssSelector, ".ist_button_red").Click();
+    }
+
     public Project GetLastCreatedProject() =>
-        // DRIVER VERSION:
         new() {Title = GetProjectsList()[^1].FindElement(By.ClassName("FnFY2YlPR10DcnOkjvMMmA==")).Text};
-    // JS VERSION
-    // var projectsListElement = "let projectList = document.getElementById('projects_list')";
-    // var lastChildElement = "projectList.lastElementChild";
-    // var childText =
-    //     _driver.ExecuteJavaScript<string>($"{projectsListElement}; return {lastChildElement}.innerText;");
 
     public Project GetProjectByNumber(int projectNumber)
     {
-        // DRIVER VERSION:
         var projectsList = GetProjectsList();
         var text = projectsList[projectNumber].FindElement(By.ClassName("FnFY2YlPR10DcnOkjvMMmA==")).Text;
 
         return new Project {Title = text};
-
-        // JS VERSION
-        // var projectsListElement = "let projectList = document.getElementById('projects_list')";
-        // var childrenCount =
-        //     _driver.ExecuteJavaScript<int>($"{projectsListElement}; return projectList.childElementCount;");
-        //
-        // if (0 <= projectNumber && projectNumber < childrenCount)
-        //     throw new ArgumentOutOfRangeException(nameof(projectNumber),
-        //         $"Provided {nameof(projectNumber)} isn't included in segment [0, projects count)");
-        //
-        // var childElement = $"projectList.children[{projectNumber}]";
-        //
-        // var childText = _driver.ExecuteJavaScript<string>(
-        //     $"{projectsListElement}; return {childElement}.getElementsByClassName('FnFY2YlPR10DcnOkjvMMmA==')[0].textContent;");
-        // // либо getElementsByTagName('span')[1], если название класса меняется
-        //
-        // return new Project {Title = childText};
     }
 
     public bool IsProjectExists(string realId) =>
-        GetProjectsList().Any(x => x.GetAttribute("data-id") == realId);
+        GetProjectsList().Any(x => x.GetAttribute(ProjectAttribute) == realId);
 
     public string GetRealProjectId(int projectNumber)
     {
-        // DRIVER VERSION:
         var projectsList = GetProjectsList();
 
         if (projectNumber < 0 && projectsList.Count <= projectNumber)
             throw new ArgumentOutOfRangeException(nameof(projectNumber),
                 $"Provided {nameof(projectNumber)} isn't included in segment [0, projects count)");
 
-        return projectsList[projectNumber].GetAttribute("data-id");
-
-        // JS VERSION:
-        // var projectsListElement = "let projectList = document.getElementById('projects_list')";
-        // var childrenCount =
-        //     _driver.ExecuteJavaScript<int>($"{projectsListElement}; return projectList.childElementCount;");
-        //
-        // if (0 <= projectNumber && projectNumber < childrenCount)
-        //     throw new ArgumentOutOfRangeException(nameof(projectNumber),
-        //         $"Provided {nameof(projectNumber)} isn't included in segment [0, projects count)");
-        //
-        // var childElement = $"projectList.children[{projectNumber}]";
-        //
-        // return _driver.ExecuteJavaScript<int>(
-        //     $"{projectsListElement}; return +{childElement}.getAttribute('data-id');");
+        return projectsList[projectNumber].GetAttribute(ProjectAttribute);
     }
 
     private ReadOnlyCollection<IWebElement> GetProjectsList() =>
-        FindElement(FindBy.Id, "projects_list")
+        FindElement(FindBy.Id, ProjectsListIdentifier)
             .FindElements(By.TagName("li"));
 }
