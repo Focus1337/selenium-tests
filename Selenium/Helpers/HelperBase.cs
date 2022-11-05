@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace Selenium.Helpers;
 
@@ -6,6 +7,7 @@ public class HelperBase
 {
     protected readonly ApplicationManager _app;
     protected readonly IWebDriver _driver;
+    protected readonly WebDriverWait _wait;
 
     protected enum FindBy
     {
@@ -21,6 +23,7 @@ public class HelperBase
     {
         _app = app;
         _driver = app.Driver;
+        _wait = app.Wait;
     }
 
     public void ManageWindowSize(int width, int height) =>

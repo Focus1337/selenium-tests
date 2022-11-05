@@ -22,7 +22,6 @@ public class TaskTests
         };
 
         _fixture.App.AccountHelper.Login(_fixture.Account);
-        Thread.Sleep(15000);
 
         _fixture.App.TaskHelper.AddNewTask(task);
         Thread.Sleep(3000);

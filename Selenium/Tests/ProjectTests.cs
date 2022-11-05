@@ -23,7 +23,6 @@ public class ProjectTests
 
         // act
         _fixture.App.AccountHelper.Login(_fixture.Account);
-        Thread.Sleep(8000);
 
         _fixture.App.ProjectHelper.AddProject(project);
         Thread.Sleep(3000);
@@ -38,14 +37,10 @@ public class ProjectTests
     [InlineData(1)]
     public void Delete_ProjectExists_ShouldDeleteProject(int projectNumber)
     {
-        // arrange
-
         // act
         _fixture.App.AccountHelper.Login(_fixture.Account);
-        Thread.Sleep(8000);
 
         var realId = _fixture.App.ProjectHelper.GetRealProjectId(projectNumber);
-        
         _fixture.App.ProjectHelper.DeleteProject(projectNumber);
         Thread.Sleep(3000);
 

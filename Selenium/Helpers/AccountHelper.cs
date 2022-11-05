@@ -1,12 +1,14 @@
-﻿using Selenium.Entities;
+﻿using OpenQA.Selenium;
+using Selenium.Entities;
 
 namespace Selenium.Helpers;
 
 public class AccountHelper : HelperBase
 {
-    public AccountHelper(ApplicationManager app) 
+    public AccountHelper(ApplicationManager app)
         : base(app)
-    { }
+    {
+    }
 
     public void Login(Account account)
     {
@@ -18,5 +20,19 @@ public class AccountHelper : HelperBase
         FindElement(FindBy.Id, "element-3").Click();
 
         FindElement(FindBy.CssSelector, ".S7Jh9YX").Click();
+
+        var _ = _wait.Until(drv => drv.FindElement(By.Id("left_menu_inner")));
+
+        // if (AreCredentialsWrong())
+        //     throw new InvalidCredentialException("Provided wrong email or password credentials.");
     }
+
+    public bool IsLoggedIn(Account account)
+    {
+        FindElement(FindBy.CssSelector, ".settings_avatar").Click();
+        return _wait.Until(drv => drv.FindElement(By.ClassName("user_menu_email"))).Text.Equals(account.Email);
+    }
+
+    private bool AreCredentialsWrong() =>
+        !FindElement(FindBy.CssSelector, ".\\_8f5b5f2b").Text.Contains("Неверный Email или пароль.");
 }

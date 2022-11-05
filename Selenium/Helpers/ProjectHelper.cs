@@ -36,6 +36,10 @@ public class ProjectHelper : HelperBase
     public void DeleteProject(int projectNumber)
     {
         var projectsListElements = GetProjectsList();
+
+        if (!IsProjectExists(GetRealProjectId(projectNumber)))
+            throw new NullReferenceException($"Project with provided project number: {projectNumber} doesn't exist.");
+
         var element = projectsListElements[projectNumber];
         element.FindElement(By.TagName("button")).Click();
 

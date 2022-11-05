@@ -1,4 +1,3 @@
-using System.Threading;
 using Xunit;
 
 namespace Selenium.Tests;
@@ -12,9 +11,14 @@ public class AuthTests
         _fixture = fixture;
 
     [Fact]
-    public void EnterExistingAccountAndLogIn_ShouldLogIn()
+    public void Login_AccountExists_ShouldLogin()
     {
+        // arrange 
+
+        // act
         _fixture.App.AccountHelper.Login(_fixture.Account);
-        Thread.Sleep(15000);
+
+        // assert
+        Assert.True(_fixture.App.AccountHelper.IsLoggedIn(_fixture.Account));
     }
 }
