@@ -1,17 +1,17 @@
 using System.Threading;
-using Selenium.Entities;
+using Selenium.Models;
 using Xunit;
 
-namespace Selenium.Tests;
+namespace Selenium.Tests.Tests;
 
 // public class 
 
 [Collection("Collection")]
-public class TaskTests
+public class ObjectiveTests
 {
     private readonly TestsFixture _fixture;
 
-    public TaskTests(TestsFixture fixture) =>
+    public ObjectiveTests(TestsFixture fixture) =>
         _fixture = fixture;
 
     [Theory]
@@ -22,7 +22,7 @@ public class TaskTests
     public void Add_LoggedIn_ShouldCreateNewTask(string title, string text)
     {
         // arrange
-        var task = new Task
+        var task = new Objective
         {
             Title = title,
             Text = text

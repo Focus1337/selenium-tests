@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
-using Selenium.Entities;
+using Selenium.Models;
 
-namespace Selenium.Helpers;
+namespace Selenium.Tests.Helpers;
 
 public class AccountHelper : HelperBase
 {

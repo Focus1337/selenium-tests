@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium;
-using Selenium.Entities;
+using Selenium.Models;
 
-namespace Selenium.Helpers;
+namespace Selenium.Tests.Helpers;
 
 public class TaskHelper : HelperBase
 {
@@ -16,15 +16,15 @@ public class TaskHelper : HelperBase
     {
     }
 
-    public void AddTask(Task task)
+    public void AddTask(Objective objective)
     {
         FindElement(FindBy.CssSelector, ".plus_add_button").Click();
 
         FindElement(FindBy.CssSelector, ".notranslate.public-DraftEditor-content").Click();
-        FindElement(FindBy.CssSelector, ".notranslate.public-DraftEditor-content").Fill(task.Title);
+        FindElement(FindBy.CssSelector, ".notranslate.public-DraftEditor-content").Fill(objective.Title);
 
         FindElement(FindBy.CssSelector, ".task_editor__description_field").Click();
-        FindElement(FindBy.CssSelector, ".task_editor__description_field").Fill(task.Text);
+        FindElement(FindBy.CssSelector, ".task_editor__description_field").Fill(objective.Text);
         FindElement(FindBy.CssSelector, ".\\_3d1243b2 > .bbdb467b").Click();
     }
 
@@ -53,7 +53,7 @@ public class TaskHelper : HelperBase
         return tasksList[taskNumber].GetAttribute(TaskAttribute);
     }
 
-    public Task GetLastCreatedTask()
+    public Objective GetLastCreatedTask()
     {
         var lastElement = GetTasksList()[^1];
         var realId = lastElement.GetAttribute(TaskAttribute);
@@ -61,7 +61,7 @@ public class TaskHelper : HelperBase
         string ElementText(string className) =>
             lastElement.FindElement(By.CssSelector($"#task-{realId}-content " + className)).Text;
 
-        return new Task
+        return new Objective
         {
             Title = ElementText("> .f9408a0e > .task_content"),
             Text = ElementText("> .task_description")

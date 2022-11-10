@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
-namespace Selenium.Helpers;
+namespace Selenium.Tests.Helpers;
 
 public class HelperBase
 {

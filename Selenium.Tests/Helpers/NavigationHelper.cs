@@ -1,4 +1,4 @@
-﻿namespace Selenium.Helpers;
+﻿namespace Selenium.Tests.Helpers;
 
 public class NavigationHelper : HelperBase
 {

@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace Selenium.Tests;
+namespace Selenium.Tests.Tests;
 
 [Collection("Collection")]
 public class AccountTests

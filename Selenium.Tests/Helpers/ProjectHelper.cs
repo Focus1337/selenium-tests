@@ -3,9 +3,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
-using Selenium.Entities;
+using Selenium.Models;
 
-namespace Selenium.Helpers;
+namespace Selenium.Tests.Helpers;
 
 public class ProjectHelper : HelperBase
 {

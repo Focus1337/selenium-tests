@@ -1,4 +1,4 @@
-﻿namespace Selenium.Entities;
+﻿namespace Selenium.Models;
 
 public class Account
 {

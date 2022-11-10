@@ -1,8 +1,8 @@
 ﻿using System;
-using Selenium.Entities;
+using Selenium.Models;
 using Xunit;
 
-namespace Selenium.Tests;
+namespace Selenium.Tests.Tests;
 
 public class TestsFixture : TestBase, IDisposable
 {

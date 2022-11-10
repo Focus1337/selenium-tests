@@ -3,9 +3,9 @@ using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
-using Selenium.Helpers;
+using Selenium.Tests.Helpers;
 
-namespace Selenium;
+namespace Selenium.Tests;
 
 public class ApplicationManager : IDisposable
 {

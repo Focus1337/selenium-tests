@@ -1,4 +1,4 @@
-﻿namespace Selenium.Tests;
+﻿namespace Selenium.Tests.Tests;
 
 public class TestBase
 {

@@ -1,6 +1,6 @@
-﻿namespace Selenium.Entities;
+﻿namespace Selenium.Models;
 
-public class Task
+public class Objective
 {
     public string Title { get; set; } = null!;
     public string Text { get; set; } = null!;

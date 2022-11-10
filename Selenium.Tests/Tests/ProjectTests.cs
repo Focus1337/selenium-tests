@@ -1,8 +1,8 @@
 using System.Threading;
-using Selenium.Entities;
+using Selenium.Models;
 using Xunit;
 
-namespace Selenium.Tests;
+namespace Selenium.Tests.Tests;
 
 [Collection("Collection")]
 public class ProjectTests
