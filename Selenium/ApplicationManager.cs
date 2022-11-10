@@ -18,8 +18,8 @@ public class ApplicationManager : IDisposable
     public ProjectHelper ProjectHelper { get; }
     public IJavaScriptExecutor JavaScriptExecutor { get; }
     public WebDriverWait Wait { get; }
-    
-    public ApplicationManager()
+
+    private ApplicationManager()
     {
         Driver = new ChromeDriver();
         Driver.Manage().Window.Maximize();

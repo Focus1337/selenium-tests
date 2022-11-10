@@ -19,9 +19,9 @@ public class ProjectHelper : HelperBase
 
     public void AddProject(Project project)
     {
-        FindElement(FindBy.CssSelector, ".a8af2163:nth-child(2) > svg").Click();
+        FindElement(FindBy.CssSelector, ".f9408a0e:nth-child(2) > .a8af2163").Click();
         {
-            var element = FindElement(FindBy.CssSelector, ".a8af2163:nth-child(2) > svg");
+            var element = FindElement(FindBy.CssSelector, ".f9408a0e:nth-child(2) > .a8af2163");
             var builder = new Actions(_driver);
             builder.MoveToElement(element).Perform();
         }

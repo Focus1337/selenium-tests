@@ -16,9 +16,9 @@ public class TaskTests
 
     [Theory]
     [InlineData("Task12", "Task12 Text")]
-    [InlineData("Task2", "Task2 Text")]
-    [InlineData("Task3", "Task3 Text")]
-    [InlineData("Task4", "Task4 Text")]
+    // [InlineData("Task2", "Task2 Text")]
+    // [InlineData("Task3", "Task3 Text")]
+    // [InlineData("Task4", "Task4 Text")]
     public void Add_LoggedIn_ShouldCreateNewTask(string title, string text)
     {
         // arrange
@@ -41,7 +41,7 @@ public class TaskTests
 
     [Theory]
     [InlineData(1)]
-    [InlineData(2)]
+    // [InlineData(2)]
     public void Delete_LoggedInAndTaskExists_ShouldDeleteTask(int taskNumber)
     {
         // act
