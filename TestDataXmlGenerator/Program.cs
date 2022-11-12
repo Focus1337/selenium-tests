@@ -1,20 +1,10 @@
-﻿using System.Xml.Linq;
+﻿using TestDataXmlGenerator.Generators;
 
-var projects =
-    new XElement("Projects");
+Console.WriteLine("Choose entity for data generation.\n1 - Account | 2 - Project | 3 - Objective: ");
+var entityName = DataGenerator.GetEntityName(Console.ReadLine());
 
-Console.Write("How many entities you want to generate? Provide at least one integer number: ");
-if (!int.TryParse(Console.ReadLine(), out var count))
-    throw new ArgumentException("You had to provide integer number, dumbass!\nRestart and try again.");
+var entities = DataGenerator.GenerateEntities(entityName);
 
-if (count <= 0)
-    throw new ArgumentException("You had to write at least one integer number.");
+Console.WriteLine($"\n\n\nYour result:\n {entities}\n\n\n");
 
-for (var i = 0; i < count; i++)
-{
-    Console.Write($"Write Title for Project {i}: ");
-    projects.Add(new XElement("Project", new XAttribute("Id", i.ToString()),
-        new XElement("Title", Console.ReadLine())));
-}
-
-Console.WriteLine(projects);
+DataGenerator.SaveFile(entityName, entities);
