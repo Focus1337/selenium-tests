@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Xml.Serialization;
 using Selenium.Models;
 using Xunit;
 
@@ -11,12 +14,25 @@ public class TestsFixture : TestBase, IDisposable
 
     public TestsFixture()
     {
-        Account = new Account(BaseEmail, BasePassword);
+        Account = new Account { Email = BaseEmail, Password = BasePassword };
         App = ApplicationManager.GetInstance();
     }
 
-    public void Dispose() => 
+    public void Dispose() =>
         App.Dispose();
+}
+
+public class TestsFixture<T>
+{
+    public static List<T> GetEntityFromXmlFile()
+    {
+        var xRoot = new XmlRootAttribute { ElementName = $"{typeof(T).Name}s", IsNullable = true };
+        var reader = new StreamReader(
+            $@"{ProjectConfiguration.ProjectRootDirectory}\{ProjectConfiguration.OutputDirectoryPath}" +
+            $@"\{ProjectConfiguration.NormalizeFileName(typeof(T).Name.ToLower())}");
+
+        return (List<T>)new XmlSerializer(typeof(List<T>), xRoot).Deserialize(reader)!;
+    }
 }
 
 [CollectionDefinition("Collection")]

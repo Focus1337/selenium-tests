@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using Selenium;
 using Selenium.Models;
 
 namespace TestDataXmlGenerator;
@@ -38,8 +39,12 @@ internal class DataGenerator
 
     public void SaveFile(XElement entities)
     {
-        var fileName = $"{EntityName.ToLower()}s_data_generated.xml";
-        var directory = $@"{Directory.GetCurrentDirectory()}\{fileName}";
+        var directoryPath = $@"{ProjectConfiguration.ProjectRootDirectory}\{ProjectConfiguration.OutputDirectoryPath}";
+        if (!Directory.Exists(directoryPath))
+            Directory.CreateDirectory(directoryPath);
+
+        var directory = $@"{directoryPath}\{ProjectConfiguration.NormalizeFileName(EntityName.ToLower())}";
+
         Console.WriteLine($"Saved into: {directory}\n");
 
         entities.Save(directory);

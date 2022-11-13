@@ -9,7 +9,7 @@ public class AccountTests
 
     public AccountTests(TestsFixture fixture) =>
         _fixture = fixture;
-
+    
     [Fact]
     public void Login_AccountExists_ShouldLogin()
     {
