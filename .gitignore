@@ -5,3 +5,5 @@
 /Selenium.Tests/obj/
 /TestDataXmlGenerator/bin/
 /TestDataXmlGenerator/obj/
+/GeneratedData/
+Selenium.sln.DotSettings.user
