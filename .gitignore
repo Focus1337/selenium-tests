@@ -1,1 +1,7 @@
 ﻿/.idea/.idea.Selenium/.idea/
+/Selenium/bin/
+/Selenium/obj/
+/Selenium.Tests/bin/
+/Selenium.Tests/obj/
+/TestDataXmlGenerator/bin/
+/TestDataXmlGenerator/obj/

@@ -1,0 +1,57 @@
+﻿using System.Xml.Linq;
+using Selenium.Models;
+
+namespace TestDataXmlGenerator;
+
+internal class DataGenerator
+{
+    private XElement Entities { get; }
+    private Type EntityType { get; }
+    private int Count { get; }
+    private string EntityName { get; }
+
+    public DataGenerator(Type entityType, int elementsCount)
+    {
+        EntityType = entityType;
+        EntityName = entityType.Name;
+        Count = elementsCount;
+        Entities = new XElement($"{EntityName}s");
+    }
+
+    public XElement GenerateEntities()
+    {
+        var properties = EntityType.GetProperties();
+        for (var i = 0; i < Count; i++)
+        {
+            Entities.Add(new XElement(EntityName));
+
+            foreach (var property in properties)
+            {
+                var propertyName = property.Name;
+                Console.Write($"Write {propertyName} for Project {i}: ");
+                Entities.Elements().Last().Add(new XElement(propertyName, Console.ReadLine()));
+            }
+        }
+
+        return Entities;
+    }
+
+    public void SaveFile(XElement entities)
+    {
+        var fileName = $"{EntityName.ToLower()}s_data_generated.xml";
+        var directory = $@"{Directory.GetCurrentDirectory()}\{fileName}";
+        Console.WriteLine($"Saved into: {directory}\n");
+
+        entities.Save(directory);
+    }
+
+    public static Type GetEntityType(string consoleInput) =>
+        Convert.ToInt32(consoleInput) switch
+        {
+            1 => typeof(Account),
+            2 => typeof(Project),
+            3 => typeof(Objective),
+            _ => throw new ArgumentOutOfRangeException(nameof(consoleInput),
+                "Provided number is outside of allowed range")
+        };
+}
