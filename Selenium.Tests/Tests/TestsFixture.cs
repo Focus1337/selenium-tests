@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 using Selenium.Models;
 using Xunit;
@@ -24,7 +25,7 @@ public class TestsFixture : TestBase, IDisposable
 
 public class TestsFixture<T>
 {
-    public static List<T> GetEntityFromXmlFile()
+    private static IEnumerable<T> GetEntityFromXmlFile()
     {
         var xRoot = new XmlRootAttribute { ElementName = $"{typeof(T).Name}s", IsNullable = true };
         var reader = new StreamReader(
@@ -32,6 +33,20 @@ public class TestsFixture<T>
             $@"\{ProjectConfiguration.NormalizeFileName(typeof(T).Name.ToLower())}");
 
         return (List<T>)new XmlSerializer(typeof(List<T>), xRoot).Deserialize(reader)!;
+    }
+
+    public static IEnumerable<object[]> GetData(int numTests)
+    {
+        foreach (var entity in GetEntityFromXmlFile().Take(numTests))
+        {
+            var properties = entity!.GetType().GetProperties();
+            var newObject = new object[properties.Length];
+
+            for (var i = 0; i < newObject.Length; i++)
+                newObject[i] = properties[i].GetValue(entity) ?? " ";
+
+            yield return newObject;
+        }
     }
 }
 

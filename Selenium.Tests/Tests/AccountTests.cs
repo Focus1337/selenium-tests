@@ -1,3 +1,4 @@
+using Selenium.Models;
 using Xunit;
 
 namespace Selenium.Tests.Tests;
@@ -9,14 +10,16 @@ public class AccountTests
 
     public AccountTests(TestsFixture fixture) =>
         _fixture = fixture;
-    
-    [Fact]
-    public void Login_AccountExists_ShouldLogin()
+
+    [Theory]
+    [MemberData(nameof(TestsFixture<Account>.GetData), parameters: 3, MemberType = typeof(TestsFixture<Account>))]
+    public void Login_AccountExists_ShouldLogin(string email, string password)
     {
         // arrange 
+        var account = new Account { Email = email, Password = password };
 
         // act
-        _fixture.App.AccountHelper.Login(_fixture.Account);
+        _fixture.App.AccountHelper.Login(account);
 
         // assert
         Assert.True(_fixture.App.AccountHelper.IsLoggedIn(_fixture.Account));

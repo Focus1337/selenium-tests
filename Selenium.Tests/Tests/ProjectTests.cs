@@ -13,13 +13,11 @@ public class ProjectTests
         _fixture = fixture;
 
     [Theory]
-    [InlineData("ТестИмя1", "ТестИмя1")]
-    // [InlineData("xdXDxDXd", "xdXDxDXd")]
-    // [InlineData("sasasa", "sasasa")]
-    public void Add_LoggedInAndTitleProvided_ShouldCreateNewProject(string title, string expected)
+    [MemberData(nameof(TestsFixture<Project>.GetData), parameters: 3, MemberType = typeof(TestsFixture<Project>))]
+    public void Add_LoggedInAndTitleProvided_ShouldCreateNewProject(string title)
     {
         // arrange
-        var project = new Project {Title = title};
+        var project = new Project { Title = title };
 
         // act
         _fixture.App.AccountHelper.Login(_fixture.Account);
@@ -28,7 +26,7 @@ public class ProjectTests
         Thread.Sleep(3000);
 
         // assert
-        Assert.Equal(expected, _fixture.App.ProjectHelper.GetLastCreatedProject().Title);
+        Assert.Equal(title, _fixture.App.ProjectHelper.GetLastCreatedProject().Title);
     }
 
     [Theory]

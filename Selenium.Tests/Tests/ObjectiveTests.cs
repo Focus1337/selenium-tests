@@ -4,8 +4,6 @@ using Xunit;
 
 namespace Selenium.Tests.Tests;
 
-// public class 
-
 [Collection("Collection")]
 public class ObjectiveTests
 {
@@ -15,14 +13,11 @@ public class ObjectiveTests
         _fixture = fixture;
 
     [Theory]
-    [InlineData("Task12", "Task12 Text")]
-    // [InlineData("Task2", "Task2 Text")]
-    // [InlineData("Task3", "Task3 Text")]
-    // [InlineData("Task4", "Task4 Text")]
-    public void Add_LoggedIn_ShouldCreateNewTask(string title, string text)
+    [MemberData(nameof(TestsFixture<Objective>.GetData), parameters: 3, MemberType = typeof(TestsFixture<Objective>))]
+    public void Add_LoggedIn_ShouldCreateNewObjective(string title, string text)
     {
         // arrange
-        var task = new Objective
+        var objective = new Objective
         {
             Title = title,
             Text = text
@@ -31,27 +26,26 @@ public class ObjectiveTests
         // act
         _fixture.App.AccountHelper.Login(_fixture.Account);
 
-        _fixture.App.TaskHelper.AddTask(task);
+        _fixture.App.ObjectiveHelper.AddObjective(objective);
         Thread.Sleep(3000);
 
         // assert
-        Assert.Equal(task.Text, _fixture.App.TaskHelper.GetLastCreatedTask().Text);
-        Assert.Equal(task.Title, _fixture.App.TaskHelper.GetLastCreatedTask().Title);
+        Assert.Equal(objective.Text, _fixture.App.ObjectiveHelper.GetLastCreatedObjective().Text);
+        Assert.Equal(objective.Title, _fixture.App.ObjectiveHelper.GetLastCreatedObjective().Title);
     }
 
     [Theory]
     [InlineData(1)]
-    // [InlineData(2)]
-    public void Delete_LoggedInAndTaskExists_ShouldDeleteTask(int taskNumber)
+    public void Delete_LoggedInAndObjectiveExists_ShouldDeleteObjective(int objectNumber)
     {
         // act
         _fixture.App.AccountHelper.Login(_fixture.Account);
 
-        var realId = _fixture.App.TaskHelper.GetRealTaskId(taskNumber);
-        _fixture.App.TaskHelper.DeleteTask(taskNumber);
+        var realId = _fixture.App.ObjectiveHelper.GetRealObjectiveId(objectNumber);
+        _fixture.App.ObjectiveHelper.DeleteObjective(objectNumber);
         Thread.Sleep(3000);
 
         // assert
-        Assert.False(_fixture.App.TaskHelper.IsTaskExists(realId));
+        Assert.False(_fixture.App.ObjectiveHelper.IsObjectiveExists(realId));
     }
 }
