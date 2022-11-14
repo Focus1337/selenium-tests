@@ -16,7 +16,8 @@ public class HelperBase
         Name,
         ClassName,
         TagName,
-        LinkText
+        LinkText,
+        XPath
     }
 
     protected HelperBase(ApplicationManager app)
@@ -38,6 +39,7 @@ public class HelperBase
             FindBy.ClassName => By.ClassName(selectionText),
             FindBy.TagName => By.TagName(selectionText),
             FindBy.LinkText => By.LinkText(selectionText),
+            FindBy.XPath => By.XPath(selectionText),
             _ => throw new InvalidSelectorException("No such selector")
         });
 }

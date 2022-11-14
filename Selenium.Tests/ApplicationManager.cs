@@ -14,7 +14,7 @@ public class ApplicationManager : IDisposable
     public IWebDriver Driver { get; }
     public NavigationHelper NavigationHelper { get; }
     public AccountHelper AccountHelper { get; }
-    public TaskHelper TaskHelper { get; }
+    public ObjectiveHelper ObjectiveHelper { get; }
     public ProjectHelper ProjectHelper { get; }
     public IJavaScriptExecutor JavaScriptExecutor { get; }
     public WebDriverWait Wait { get; }
@@ -28,7 +28,7 @@ public class ApplicationManager : IDisposable
 
         NavigationHelper = new NavigationHelper(this, BaseUrl);
         AccountHelper = new AccountHelper(this);
-        TaskHelper = new TaskHelper(this);
+        ObjectiveHelper = new ObjectiveHelper(this);
         ProjectHelper = new ProjectHelper(this);
     }
 

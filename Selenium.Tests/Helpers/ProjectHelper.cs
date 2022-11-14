@@ -19,9 +19,10 @@ public class ProjectHelper : HelperBase
 
     public void AddProject(Project project)
     {
-        FindElement(FindBy.CssSelector, ".f9408a0e:nth-child(2) > .a8af2163").Click();
+        const string buttonPath = "//div[@id='left_menu_inner']/div/div/div/div/button";
+        FindElement(FindBy.XPath, buttonPath).Click();
         {
-            var element = FindElement(FindBy.CssSelector, ".f9408a0e:nth-child(2) > .a8af2163");
+            var element = FindElement(FindBy.XPath, buttonPath);
             var builder = new Actions(_driver);
             builder.MoveToElement(element).Perform();
         }

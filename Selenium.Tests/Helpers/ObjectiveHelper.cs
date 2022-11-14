@@ -6,17 +6,17 @@ using Selenium.Models;
 
 namespace Selenium.Tests.Helpers;
 
-public class TaskHelper : HelperBase
+public class ObjectiveHelper : HelperBase
 {
-    private const string TaskAttribute = "data-item-id";
-    private const string TasksListIdentifier = "items";
+    private const string ObjectiveAttribute = "id";//"data-item-id";
+    private const string ObjectivesListIdentifier = "items";
 
-    public TaskHelper(ApplicationManager app)
+    public ObjectiveHelper(ApplicationManager app)
         : base(app)
     {
     }
 
-    public void AddTask(Objective objective)
+    public void AddObjective(Objective objective)
     {
         FindElement(FindBy.CssSelector, ".plus_add_button").Click();
 
@@ -28,10 +28,10 @@ public class TaskHelper : HelperBase
         FindElement(FindBy.CssSelector, ".\\_3d1243b2 > .bbdb467b").Click();
     }
 
-    public void DeleteTask(int taskNumber)
+    public void DeleteObjective(int taskNumber)
     {
-        var realId = GetRealTaskId(taskNumber);
-        if (!IsTaskExists(realId))
+        var realId = GetRealObjectiveId(taskNumber);
+        if (!IsObjectiveExists(realId))
             throw new NullReferenceException($"Task with provided {nameof(taskNumber)}: {taskNumber} doesn't exist.");
         
         var element = FindElement(FindBy.CssSelector, $"#task-{realId} .task_list_item__content");
@@ -42,37 +42,38 @@ public class TaskHelper : HelperBase
         FindElement(FindBy.CssSelector, ".\\_3d1243b2:nth-child(2)").Click();
     }
 
-    public string GetRealTaskId(int taskNumber)
+    public string GetRealObjectiveId(int taskNumber)
     {
-        var tasksList = GetTasksList();
-
+        var tasksList = GetObjectivesList();
+//*[@id="task-6350549701"]
+// 
         if (taskNumber < 0 && tasksList.Count <= taskNumber)
             throw new ArgumentOutOfRangeException(nameof(taskNumber),
                 $"Provided {nameof(taskNumber)} isn't included in segment [0, tasks count)");
 
-        return tasksList[taskNumber].GetAttribute(TaskAttribute);
+        return tasksList[taskNumber].GetAttribute(ObjectiveAttribute).Remove(0, 5);
     }
 
-    public Objective GetLastCreatedTask()
+    public Objective GetLastCreatedObjective()
     {
-        var lastElement = GetTasksList()[^1];
-        var realId = lastElement.GetAttribute(TaskAttribute);
+        var lastElement = GetObjectivesList()[^1];
+        var realId = lastElement.GetAttribute(ObjectiveAttribute);
 
         string ElementText(string className) =>
-            lastElement.FindElement(By.CssSelector($"#task-{realId}-content " + className)).Text;
+            lastElement.FindElement(By.XPath($"//div[@id='task-{realId}-content']{className}")).Text;
 
         return new Objective
         {
-            Title = ElementText("> .f9408a0e > .task_content"),
-            Text = ElementText("> .task_description")
+            Title = ElementText("/div/div"),
+            Text = ElementText("/div[2]")
         };
     }
 
-    public bool IsTaskExists(string realId) =>
-        GetTasksList().Any(element => element.GetAttribute(TaskAttribute).Equals(realId));
+    public bool IsObjectiveExists(string realId) =>
+        GetObjectivesList().Any(element => element.GetAttribute(ObjectiveAttribute).Equals(realId));
 
-    private List<IWebElement> GetTasksList() =>
-        FindElement(FindBy.ClassName, TasksListIdentifier)
+    private List<IWebElement> GetObjectivesList() =>
+        FindElement(FindBy.ClassName, ObjectivesListIdentifier)
             .FindElements(By.TagName("li"))
             .SkipLast(1)
             .ToList();
