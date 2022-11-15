@@ -17,11 +17,7 @@ public class ObjectiveTests
     public void Add_LoggedIn_ShouldCreateNewObjective(string title, string text)
     {
         // arrange
-        var objective = new Objective
-        {
-            Title = title,
-            Text = text
-        };
+        var objective = new Objective { Title = title, Text = text };
 
         // act
         _fixture.App.AccountHelper.Login(_fixture.Account);

@@ -51,4 +51,7 @@ public static class WebElementExtension
 
     public static void Click(this IWebElement element) =>
         element.Click();
+
+    public static string GetRealObjectiveId(this IWebElement element, string attributeName) =>
+        element.GetAttribute(attributeName).Remove(0, 5);
 }

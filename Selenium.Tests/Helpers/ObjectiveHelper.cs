@@ -8,7 +8,7 @@ namespace Selenium.Tests.Helpers;
 
 public class ObjectiveHelper : HelperBase
 {
-    private const string ObjectiveAttribute = "id";//"data-item-id";
+    private const string ObjectiveAttribute = "id"; //"data-item-id";
     private const string ObjectivesListIdentifier = "items";
 
     public ObjectiveHelper(ApplicationManager app)
@@ -33,9 +33,8 @@ public class ObjectiveHelper : HelperBase
         var realId = GetRealObjectiveId(taskNumber);
         if (!IsObjectiveExists(realId))
             throw new NullReferenceException($"Task with provided {nameof(taskNumber)}: {taskNumber} doesn't exist.");
-        
-        var element = FindElement(FindBy.CssSelector, $"#task-{realId} .task_list_item__content");
-        element.Click();
+
+        FindElement(FindBy.XPath, $"//li[@id='task-{realId}']/div/div[2]/div[2]").Click();
 
         FindElement(FindBy.CssSelector, "button[aria-label=\"Другие действия\"]").Click();
         FindElement(FindBy.CssSelector, "button[aria-label=\"Удалить задачу…\"]").Click();
@@ -45,19 +44,18 @@ public class ObjectiveHelper : HelperBase
     public string GetRealObjectiveId(int taskNumber)
     {
         var tasksList = GetObjectivesList();
-//*[@id="task-6350549701"]
-// 
+
         if (taskNumber < 0 && tasksList.Count <= taskNumber)
             throw new ArgumentOutOfRangeException(nameof(taskNumber),
                 $"Provided {nameof(taskNumber)} isn't included in segment [0, tasks count)");
 
-        return tasksList[taskNumber].GetAttribute(ObjectiveAttribute).Remove(0, 5);
+        return tasksList[taskNumber].GetRealObjectiveId(ObjectiveAttribute);
     }
 
     public Objective GetLastCreatedObjective()
     {
         var lastElement = GetObjectivesList()[^1];
-        var realId = lastElement.GetAttribute(ObjectiveAttribute);
+        var realId = lastElement.GetRealObjectiveId(ObjectiveAttribute);
 
         string ElementText(string className) =>
             lastElement.FindElement(By.XPath($"//div[@id='task-{realId}-content']{className}")).Text;
@@ -70,7 +68,7 @@ public class ObjectiveHelper : HelperBase
     }
 
     public bool IsObjectiveExists(string realId) =>
-        GetObjectivesList().Any(element => element.GetAttribute(ObjectiveAttribute).Equals(realId));
+        GetObjectivesList().Any(element => element.GetRealObjectiveId(ObjectiveAttribute).Equals(realId));
 
     private List<IWebElement> GetObjectivesList() =>
         FindElement(FindBy.ClassName, ObjectivesListIdentifier)
