@@ -20,21 +20,21 @@ public class ProjectHelper : HelperBase
     public void AddProject(Project project)
     {
         const string buttonPath = "//div[@id='left_menu_inner']/div/div/div/div/button";
-        FindElement(FindBy.XPath, buttonPath).Click();
+        FindElement(By.XPath(buttonPath)).Click();
         {
-            var element = FindElement(FindBy.XPath, buttonPath);
+            var element = FindElement(By.XPath(buttonPath));
             var builder = new Actions(_driver);
             builder.MoveToElement(element).Perform();
         }
         {
-            var element = FindElement(FindBy.TagName, "body");
+            var element = FindElement(By.TagName("body"));
             var builder = new Actions(_driver);
             builder.MoveToElement(element, 0, 0).Perform();
         }
 
-        FindElement(FindBy.Id, "edit_project_modal_field_name").Fill(project.Title);
-        FindElement(FindBy.CssSelector, ".reactist_modal_box__actions").Click();
-        FindElement(FindBy.CssSelector, ".ist_button_red").Click();
+        FindElement(By.Id("edit_project_modal_field_name")).Fill(project.Title);
+        FindElement(By.CssSelector(".reactist_modal_box__actions")).Click();
+        FindElement(By.CssSelector(".ist_button_red")).Click();
     }
 
     public void DeleteProject(int projectNumber)
@@ -48,8 +48,8 @@ public class ProjectHelper : HelperBase
         var element = projectsListElements[projectNumber];
         element.FindElement(By.TagName("button")).Click();
 
-        FindElement(FindBy.CssSelector, ".menu_item:nth-child(13) > .icon_menu_item__content").Click();
-        FindElement(FindBy.CssSelector, ".\\_3d1243b2 > .bbdb467b").Click();
+        FindElement(By.CssSelector(".menu_item:nth-child(13) > .icon_menu_item__content")).Click();
+        FindElement(By.CssSelector(".\\_3d1243b2 > .bbdb467b")).Click();
     }
 
     public void UpdateProjectTitle(int projectNumber, string title)
@@ -59,26 +59,26 @@ public class ProjectHelper : HelperBase
             throw new NullReferenceException(
                 $"Project with provided {nameof(projectNumber)}: {projectNumber} doesn't exist.");
 
-        var element = FindElement(FindBy.CssSelector, $"li[{ProjectAttribute}='{realId}']");
+        var element = FindElement(By.CssSelector($"li[{ProjectAttribute}='{realId}']"));
         element.FindElement(By.TagName("button")).Click();
-        FindElement(FindBy.CssSelector, ".menu_item:nth-child(4) > .icon_menu_item__content").Click();
+        FindElement(By.CssSelector(".menu_item:nth-child(4) > .icon_menu_item__content")).Click();
 
-        var field = FindElement(FindBy.Id, "edit_project_modal_field_name");
+        var field = FindElement(By.Id("edit_project_modal_field_name"));
         field.Clear();
         field.Fill(title);
 
-        FindElement(FindBy.CssSelector, ".ist_button_red").Click();
+        FindElement(By.CssSelector(".ist_button_red")).Click();
     }
 
     public Project GetLastCreatedProject() =>
-        new() {Title = GetProjectsList()[^1].FindElement(By.ClassName("FnFY2YlPR10DcnOkjvMMmA==")).Text};
+        new() { Title = GetProjectsList()[^1].FindElement(By.ClassName("FnFY2YlPR10DcnOkjvMMmA==")).Text };
 
     public Project GetProjectByNumber(int projectNumber)
     {
         var projectsList = GetProjectsList();
         var text = projectsList[projectNumber].FindElement(By.ClassName("FnFY2YlPR10DcnOkjvMMmA==")).Text;
 
-        return new Project {Title = text};
+        return new Project { Title = text };
     }
 
     public bool IsProjectExists(string realId) =>
@@ -96,6 +96,6 @@ public class ProjectHelper : HelperBase
     }
 
     private ReadOnlyCollection<IWebElement> GetProjectsList() =>
-        FindElement(FindBy.Id, ProjectsListIdentifier)
+        FindElement(By.Id(ProjectsListIdentifier))
             .FindElements(By.TagName("li"));
 }

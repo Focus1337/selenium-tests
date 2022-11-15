@@ -18,14 +18,14 @@ public class ObjectiveHelper : HelperBase
 
     public void AddObjective(Objective objective)
     {
-        FindElement(FindBy.CssSelector, ".plus_add_button").Click();
+        FindElement(By.CssSelector(".plus_add_button")).Click();
 
-        FindElement(FindBy.CssSelector, ".notranslate.public-DraftEditor-content").Click();
-        FindElement(FindBy.CssSelector, ".notranslate.public-DraftEditor-content").Fill(objective.Title);
+        FindElement(By.CssSelector(".notranslate.public-DraftEditor-content")).Click();
+        FindElement(By.CssSelector(".notranslate.public-DraftEditor-content")).Fill(objective.Title);
 
-        FindElement(FindBy.CssSelector, ".task_editor__description_field").Click();
-        FindElement(FindBy.CssSelector, ".task_editor__description_field").Fill(objective.Text);
-        FindElement(FindBy.CssSelector, ".\\_3d1243b2 > .bbdb467b").Click();
+        FindElement(By.CssSelector(".task_editor__description_field")).Click();
+        FindElement(By.CssSelector(".task_editor__description_field")).Fill(objective.Text);
+        FindElement(By.CssSelector(".\\_3d1243b2 > .bbdb467b")).Click();
     }
 
     public void DeleteObjective(int taskNumber)
@@ -34,11 +34,11 @@ public class ObjectiveHelper : HelperBase
         if (!IsObjectiveExists(realId))
             throw new NullReferenceException($"Task with provided {nameof(taskNumber)}: {taskNumber} doesn't exist.");
 
-        FindElement(FindBy.XPath, $"//li[@id='task-{realId}']/div/div[2]/div[2]").Click();
+        FindElement(By.XPath($"//li[@id='task-{realId}']/div/div[2]/div[2]")).Click();
 
-        FindElement(FindBy.CssSelector, "button[aria-label=\"Другие действия\"]").Click();
-        FindElement(FindBy.CssSelector, "button[aria-label=\"Удалить задачу…\"]").Click();
-        FindElement(FindBy.CssSelector, ".\\_3d1243b2:nth-child(2)").Click();
+        FindElement(By.CssSelector("button[aria-label=\"Другие действия\"]")).Click();
+        FindElement(By.CssSelector("button[aria-label=\"Удалить задачу…\"]")).Click();
+        FindElement(By.CssSelector(".\\_3d1243b2:nth-child(2)")).Click();
     }
 
     public string GetRealObjectiveId(int taskNumber)
@@ -71,7 +71,7 @@ public class ObjectiveHelper : HelperBase
         GetObjectivesList().Any(element => element.GetRealObjectiveId(ObjectiveAttribute).Equals(realId));
 
     private List<IWebElement> GetObjectivesList() =>
-        FindElement(FindBy.ClassName, ObjectivesListIdentifier)
+        FindElement(By.ClassName(ObjectivesListIdentifier))
             .FindElements(By.TagName("li"))
             .SkipLast(1)
             .ToList();
