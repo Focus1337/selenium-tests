@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Reflection;
+using System.Xml.Linq;
 using Selenium;
 using Selenium.Models;
 
@@ -10,6 +11,8 @@ internal class DataGenerator
     private Type EntityType { get; }
     private int Count { get; }
     private string EntityName { get; }
+    private PropertyInfo[]? _properties;
+    private PropertyInfo[] Properties => _properties ??= EntityType.GetProperties();
 
     public DataGenerator(Type entityType, int elementsCount)
     {
@@ -21,15 +24,14 @@ internal class DataGenerator
 
     public XElement GenerateEntities()
     {
-        var properties = EntityType.GetProperties();
         for (var i = 0; i < Count; i++)
         {
             Entities.Add(new XElement(EntityName));
 
-            foreach (var property in properties)
+            foreach (var property in Properties)
             {
                 var propertyName = property.Name;
-                Console.Write($"Write {propertyName} for Project {i}: ");
+                Console.Write($"Write {propertyName} for {EntityType.Name} {i}: ");
                 Entities.Elements().Last().Add(new XElement(propertyName, Console.ReadLine()));
             }
         }
