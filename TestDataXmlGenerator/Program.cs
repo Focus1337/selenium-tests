@@ -1,7 +1,7 @@
 ﻿using TestDataXmlGenerator;
 
 Console.WriteLine("Choose entity for data generation.\n1 - Account | 2 - Project | 3 - Objective: ");
-var entityType = DataGenerator.GetEntityType(Console.ReadLine() ?? "0");
+var dataType = DataGenerator.GetDataType(Console.ReadLine() ?? "0");
 
 Console.Write("\nHow many objects you want to generate?\nMinimum 1 object. Provide integer number: ");
 if (!int.TryParse(Console.ReadLine(), out var count))
@@ -9,8 +9,8 @@ if (!int.TryParse(Console.ReadLine(), out var count))
 if (count <= 0)
     throw new ArgumentException("You had to write at least one integer number.");
 
-var generator = new DataGenerator(entityType, count);
-var entities = generator.GenerateEntities();
+var generator = new DataGenerator(dataType, count);
+var data = generator.GenerateData();
 
-Console.WriteLine($"\n\n\nYour result:\n {entities}\n\n\n");
-generator.SaveFile(entities);
+Console.WriteLine($"\n\n\nYour result:\n {data}\n\n\n");
+generator.SaveFile(data);

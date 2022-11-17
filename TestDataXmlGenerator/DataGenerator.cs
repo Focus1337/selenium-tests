@@ -7,36 +7,36 @@ namespace TestDataXmlGenerator;
 
 internal class DataGenerator
 {
-    private XElement Entities { get; }
-    private Type EntityType { get; }
+    private XElement Data { get; }
+    private Type DataType { get; }
     private int Count { get; }
-    private string EntityName { get; }
+    private string DataName { get; }
     private PropertyInfo[]? _properties;
-    private PropertyInfo[] Properties => _properties ??= EntityType.GetProperties();
+    private PropertyInfo[] Properties => _properties ??= DataType.GetProperties();
 
-    public DataGenerator(Type entityType, int elementsCount)
+    public DataGenerator(Type dataType, int elementsCount)
     {
-        EntityType = entityType;
-        EntityName = entityType.Name;
+        DataType = dataType;
+        DataName = dataType.Name;
         Count = elementsCount;
-        Entities = new XElement($"{EntityName}s");
+        Data = new XElement($"{DataName}s");
     }
 
-    public XElement GenerateEntities()
+    public XElement GenerateData()
     {
         for (var i = 0; i < Count; i++)
         {
-            Entities.Add(new XElement(EntityName));
+            Data.Add(new XElement(DataName));
 
             foreach (var property in Properties)
             {
                 var propertyName = property.Name;
-                Console.Write($"Write {propertyName} for {EntityType.Name} {i}: ");
-                Entities.Elements().Last().Add(new XElement(propertyName, Console.ReadLine()));
+                Console.Write($"Write {propertyName} for {DataType.Name} {i}: ");
+                Data.Elements().Last().Add(new XElement(propertyName, Console.ReadLine()));
             }
         }
 
-        return Entities;
+        return Data;
     }
 
     public void SaveFile(XElement entities)
@@ -45,14 +45,14 @@ internal class DataGenerator
         if (!Directory.Exists(directoryPath))
             Directory.CreateDirectory(directoryPath);
 
-        var directory = $@"{directoryPath}\{ProjectConfiguration.NormalizeFileName(EntityName.ToLower())}";
+        var directory = $@"{directoryPath}\{ProjectConfiguration.NormalizeFileName(DataName.ToLower())}";
 
         Console.WriteLine($"Saved into: {directory}\n");
 
         entities.Save(directory);
     }
 
-    public static Type GetEntityType(string consoleInput) =>
+    public static Type GetDataType(string consoleInput) =>
         Convert.ToInt32(consoleInput) switch
         {
             1 => typeof(Account),
