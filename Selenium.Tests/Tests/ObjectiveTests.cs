@@ -16,7 +16,7 @@ public class ObjectiveTests
     }
 
     [Theory]
-    [MemberData(nameof(TestsFixture<Objective>.GetData), parameters: 3, MemberType = typeof(TestsFixture<Objective>))]
+    [MemberData(nameof(TestsFixture<Objective>.GetData), parameters: new object[] { 3, "add" }, MemberType = typeof(TestsFixture<Objective>))]
     public void Add_LoggedIn_ShouldCreateNewObjective(string title, string text)
     {
         // arrange

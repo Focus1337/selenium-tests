@@ -10,7 +10,7 @@ namespace Selenium.Tests;
 public class ApplicationManager : IDisposable
 {
     private const string BaseUrl = "https://todoist.com/";
-    private static ThreadLocal<ApplicationManager> _app = new();
+    private static readonly ThreadLocal<ApplicationManager> _app = new();
     public IWebDriver Driver { get; }
     public NavigationHelper NavigationHelper { get; }
     public AccountHelper AccountHelper { get; }

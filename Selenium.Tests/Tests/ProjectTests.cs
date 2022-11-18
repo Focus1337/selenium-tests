@@ -16,7 +16,7 @@ public class ProjectTests
     }
 
     [Theory]
-    [MemberData(nameof(TestsFixture<Project>.GetData), parameters: 3, MemberType = typeof(TestsFixture<Project>))]
+    [MemberData(nameof(TestsFixture<Project>.GetData), parameters: new object[] { 3, "add" }, MemberType = typeof(TestsFixture<Project>))]
     public void Add_LoggedInAndTitleProvided_ShouldCreateNewProject(string title)
     {
         // arrange

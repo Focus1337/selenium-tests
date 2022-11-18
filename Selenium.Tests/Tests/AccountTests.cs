@@ -13,7 +13,8 @@ public class AccountTests
         _fixture = fixture;
 
     [Theory]
-    [MemberData(nameof(TestsFixture<Account>.GetData), parameters: 3, MemberType = typeof(TestsFixture<Account>))]
+    [MemberData(nameof(TestsFixture<Account>.GetData), parameters: new object[] { 3, "exist" },
+        MemberType = typeof(TestsFixture<Account>))]
     public void Login_AccountExists_ShouldLogin(string email, string password)
     {
         // arrange 
@@ -27,7 +28,8 @@ public class AccountTests
     }
 
     [Theory]
-    [MemberData(nameof(TestsFixture<Account>.GetData), parameters: 3, MemberType = typeof(TestsFixture<Account>))]
+    [MemberData(nameof(TestsFixture<Account>.GetData), parameters: new object[] { 3, "not_exist" },
+        MemberType = typeof(TestsFixture<Account>))]
     public void Login_AccountNotExists_ShouldLogin(string email, string password)
     {
         // arrange 

@@ -11,14 +11,16 @@ internal class DataGenerator
     private Type DataType { get; }
     private int Count { get; }
     private string DataName { get; }
+    private string TestDataName { get; }
     private PropertyInfo[]? _properties;
     private PropertyInfo[] Properties => _properties ??= DataType.GetProperties();
 
-    public DataGenerator(Type dataType, int elementsCount)
+    public DataGenerator(Type dataType, string testDataName, int elementsCount)
     {
         DataType = dataType;
         DataName = dataType.Name;
         Count = elementsCount;
+        TestDataName = testDataName;
         Data = new XElement($"{DataName}s");
     }
 
@@ -41,11 +43,12 @@ internal class DataGenerator
 
     public void SaveFile(XElement entities)
     {
-        var directoryPath = $@"{ProjectConfiguration.ProjectRootDirectory}\{ProjectConfiguration.OutputDirectoryPath}";
+        var directoryPath = $@"{ProjectConfiguration.ProjectRootDirectory}\{ProjectConfiguration.OutputDirectoryName}";
         if (!Directory.Exists(directoryPath))
             Directory.CreateDirectory(directoryPath);
 
-        var directory = $@"{directoryPath}\{ProjectConfiguration.NormalizeFileName(DataName.ToLower())}";
+        var directory =
+            $@"{directoryPath}\{ProjectConfiguration.GetNormalizedFileName(TestDataName, DataName.ToLower())}";
 
         Console.WriteLine($"Saved into: {directory}\n");
 

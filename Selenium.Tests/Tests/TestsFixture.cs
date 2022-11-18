@@ -8,14 +8,14 @@ using Xunit;
 
 namespace Selenium.Tests.Tests;
 
-public class TestsFixture : TestBase, IDisposable
+public class TestsFixture : IDisposable
 {
     public ApplicationManager App { get; }
     public Account Account { get; }
 
     public TestsFixture()
     {
-        Account = new Account { Email = BaseEmail, Password = BasePassword };
+        Account = new Account { Email = ProjectConfiguration.Email, Password = ProjectConfiguration.Password };
         App = ApplicationManager.GetInstance();
     }
 
@@ -25,19 +25,19 @@ public class TestsFixture : TestBase, IDisposable
 
 public class TestsFixture<T>
 {
-    private static IEnumerable<T> GetEntityFromXmlFile()
+    private static IEnumerable<T> GetEntityFromXmlFile(string testDataName)
     {
         var xRoot = new XmlRootAttribute { ElementName = $"{typeof(T).Name}s", IsNullable = true };
         var reader = new StreamReader(
-            $@"{ProjectConfiguration.ProjectRootDirectory}\{ProjectConfiguration.OutputDirectoryPath}" +
-            $@"\{ProjectConfiguration.NormalizeFileName(typeof(T).Name.ToLower())}");
+            $@"{ProjectConfiguration.ProjectRootDirectory}\{ProjectConfiguration.OutputDirectoryName}" +
+            $@"\{ProjectConfiguration.GetNormalizedFileName(testDataName, typeof(T).Name.ToLower())}");
 
         return (List<T>)new XmlSerializer(typeof(List<T>), xRoot).Deserialize(reader)!;
     }
 
-    public static IEnumerable<object[]> GetData(int numTests)
+    public static IEnumerable<object[]> GetData(int numTests, string testDataName)
     {
-        foreach (var entity in GetEntityFromXmlFile().Take(numTests))
+        foreach (var entity in GetEntityFromXmlFile(testDataName).Take(numTests))
         {
             var properties = entity!.GetType().GetProperties();
             var newObject = new object[properties.Length];
