@@ -1,5 +1,4 @@
-﻿using System;
-using System.Security.Authentication;
+﻿using System.Security.Authentication;
 using OpenQA.Selenium;
 using Selenium.Models;
 
@@ -14,6 +13,9 @@ public class AccountHelper : HelperBase
 
     public void Login(Account account)
     {
+        if (IsLoggedIn(account))
+            return;
+
         _app.NavigationHelper.OpenPage("/auth/login");
         FindElement(By.Id("element-0")).Fill(account.Email);
         FindElement(By.Id("element-3")).Fill(account.Password);
@@ -34,10 +36,32 @@ public class AccountHelper : HelperBase
         }
     }
 
-    public bool IsLoggedIn(Account account)
+    private void Logout()
     {
         FindElement(By.CssSelector(".settings_avatar")).Click();
-        return _wait.Until(drv => drv.FindElement(By.ClassName("user_menu_email"))).Text.Equals(account.Email);
+        FindElement(By.XPath("//div[2]/div/div/button[2]")).Click();
+    }
+
+    public bool IsLoggedIn(Account account)
+    {
+        IWebElement element;
+        try
+        {
+            element = FindElement(By.CssSelector(".settings_avatar"));
+        }
+        catch (NoSuchElementException)
+        {
+            return false;
+        }
+
+        element.Click();
+        var elementExists = _wait.Until(drv => drv.FindElement(By.ClassName("user_menu_email"))).Text
+            .Equals(account.Email);
+
+        _app.NavigationHelper.OpenHomePage();
+        var _ = _wait.Until(drv => drv.FindElement(By.Id("left_menu_inner")));
+
+        return elementExists;
     }
 
     private bool AreCredentialsWrong() =>
