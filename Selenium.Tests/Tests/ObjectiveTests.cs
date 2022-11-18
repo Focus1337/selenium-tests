@@ -9,8 +9,11 @@ public class ObjectiveTests
 {
     private readonly TestsFixture _fixture;
 
-    public ObjectiveTests(TestsFixture fixture) =>
+    public ObjectiveTests(TestsFixture fixture)
+    {
         _fixture = fixture;
+        _fixture.App.AccountHelper.Login(_fixture.Account);
+    }
 
     [Theory]
     [MemberData(nameof(TestsFixture<Objective>.GetData), parameters: 3, MemberType = typeof(TestsFixture<Objective>))]
@@ -20,8 +23,6 @@ public class ObjectiveTests
         var objective = new Objective { Title = title, Text = text };
 
         // act
-        _fixture.App.AccountHelper.Login(_fixture.Account);
-
         _fixture.App.ObjectiveHelper.AddObjective(objective);
         Thread.Sleep(3000);
 
@@ -35,8 +36,6 @@ public class ObjectiveTests
     public void Delete_LoggedInAndObjectiveExists_ShouldDeleteObjective(int objectNumber)
     {
         // act
-        _fixture.App.AccountHelper.Login(_fixture.Account);
-
         var realId = _fixture.App.ObjectiveHelper.GetRealObjectiveId(objectNumber);
         _fixture.App.ObjectiveHelper.DeleteObjective(objectNumber);
         Thread.Sleep(3000);

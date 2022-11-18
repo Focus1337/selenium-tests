@@ -1,6 +1,7 @@
 ﻿using System.Security.Authentication;
 using OpenQA.Selenium;
 using Selenium.Models;
+using SeleniumExtras.WaitHelpers;
 
 namespace Selenium.Tests.Helpers;
 
@@ -11,9 +12,9 @@ public class AccountHelper : HelperBase
     {
     }
 
-    public void Login(Account account)
+    public void Login(Account account, bool logoutAfter = false)
     {
-        if (IsLoggedIn(account))
+        if (IsLoggedIn(account) && !logoutAfter)
             return;
 
         _app.NavigationHelper.OpenPage("/auth/login");
@@ -58,7 +59,18 @@ public class AccountHelper : HelperBase
         var elementExists = _wait.Until(drv => drv.FindElement(By.ClassName("user_menu_email"))).Text
             .Equals(account.Email);
 
-        _app.NavigationHelper.OpenHomePage();
+        _app.NavigationHelper.ReloadPage();
+
+        // genius code
+        try
+        {
+            _wait.Until(ExpectedConditions.AlertIsPresent()).Accept();
+        }
+        catch (WebDriverTimeoutException)
+        {
+            _app.NavigationHelper.ReloadPage();
+        }
+
         var _ = _wait.Until(drv => drv.FindElement(By.Id("left_menu_inner")));
 
         return elementExists;

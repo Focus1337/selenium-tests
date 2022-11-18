@@ -9,8 +9,11 @@ public class ProjectTests
 {
     private readonly TestsFixture _fixture;
 
-    public ProjectTests(TestsFixture fixture) =>
+    public ProjectTests(TestsFixture fixture)
+    {
         _fixture = fixture;
+        _fixture.App.AccountHelper.Login(_fixture.Account);
+    }
 
     [Theory]
     [MemberData(nameof(TestsFixture<Project>.GetData), parameters: 3, MemberType = typeof(TestsFixture<Project>))]
@@ -20,8 +23,6 @@ public class ProjectTests
         var project = new Project { Title = title };
 
         // act
-        _fixture.App.AccountHelper.Login(_fixture.Account);
-
         _fixture.App.ProjectHelper.AddProject(project);
         Thread.Sleep(3000);
 
@@ -35,8 +36,6 @@ public class ProjectTests
     public void Delete_ProjectExists_ShouldDeleteProject(int projectNumber)
     {
         // act
-        _fixture.App.AccountHelper.Login(_fixture.Account);
-
         var realId = _fixture.App.ProjectHelper.GetRealProjectId(projectNumber);
         _fixture.App.ProjectHelper.DeleteProject(projectNumber);
         Thread.Sleep(3000);
@@ -53,7 +52,6 @@ public class ProjectTests
         // arrange
 
         // act
-        _fixture.App.AccountHelper.Login(_fixture.Account);
         _fixture.App.ProjectHelper.UpdateProjectTitle(projectNumber, title);
         Thread.Sleep(3000);
 

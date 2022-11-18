@@ -13,4 +13,7 @@ public class NavigationHelper : HelperBase
 
     public void OpenHomePage() =>
         OpenPage("");
+
+    public void ReloadPage() =>
+        _driver.Navigate().Refresh();
 }
